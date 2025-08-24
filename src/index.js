@@ -48,19 +48,48 @@ function validity(arr) {
 
 let queue = []
 
-function travel(arr1) {
-    queue.push(arr1)
+function knightMoves(arr1,arr2) {
+    let parentArr = structuredClone(arr)
+    queue.push([arr1,0])
+    let dist = 0
+    let childQueue = []
     while(queue.length != 0) {
         let move = queue.shift()
-        if(!arr[move[0]][move[1]]){
-            arr[move[0]][move[1]] = 1
-            let moves = validity(move)
+        if(JSON.stringify(move[0]) == JSON.stringify(arr2)) { 
+            arr[move[0][0]][move[0][1]] = 1
+            queue = move
+            break
+        } 
+
+        if(!arr[move[0][0]][move[0][1]]){
+            arr[move[0][0]][move[0][1]] = 1
+            let moves = validity(move[0])
             for(let i =0; i < moves.length; i++) {
-                queue.push(moves[i])
+                if(parentArr[moves[i][0]][moves[i][1]] == 0 ) {
+                    parentArr[moves[i][0]][moves[i][1]] =  move[0]  
+                }
+                childQueue.push([moves[i], dist])
             }
         }
+        if(queue.length == 0) {
+            dist++
+            queue = childQueue
+            childQueue = []
+        }
     }    
+    let movement = []
+    let move = queue[0]
+    while(JSON.stringify(move) != JSON.stringify(arr1)) { 
+        movement.push(move)
+        move = parentArr[move[0]][move[1]]
+    } 
+    movement.push(arr1) 
+    console.log("You made it in " + (queue[1] + 1) + " moves!, Here's your path")
+    for(let i = movement.length - 1; i >= 0; i--) {
+        console.log(movement[i])
+    }
+
 }
 
-travel([0,0])
+knightMoves([0,0],[7,7])
 // console.log(arr)
