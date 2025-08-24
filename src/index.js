@@ -91,5 +91,5 @@ function knightMoves(arr1,arr2) {
 
 }
 
-knightMoves([0,0],[7,7])
+knightMoves([7,1],[0,3])
 // console.log(arr)
